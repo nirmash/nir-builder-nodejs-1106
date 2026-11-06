@@ -66,6 +66,21 @@ assets. The original endpoints are unchanged; there is no content negotiation.
 `/demo` returns HTTP **200** with `text/html; charset=utf-8`, not plain text.
 Use `/demo` for template thumbnails and `/health` for health checks.
 
+## Meme generator
+
+Open `/meme` directly or select **Meme lab** on `/demo`. Each visit picks
+a random original illustration and a funny caption pair. Choose a picture,
+edit the top and bottom captions, and select **Apply captions**, or select
+**Surprise me** to randomize both. **Download meme (SVG)** saves the current
+image with its captions.
+
+The generator is dependency-free and works without JavaScript or external
+image services. Its four illustrations are shipped with the app. Captions
+are limited to 100 characters each and encoded in the URL so the same meme
+can be bookmarked or shared; do not enter secrets. `/meme.svg` serves the
+image, and existing deployed-app sign-in requirements also protect these
+routes.
+
 Responses end with a newline. Stop the server with **Ctrl+C** before running
 tests again or starting another instance.
 

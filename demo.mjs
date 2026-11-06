@@ -102,6 +102,7 @@ FORM: Brief-pinned ink-and-lime showcase, with a responsive split composition.
       <div class="brand"><span class="mark" aria-hidden="true">js</span> App Service Builder</div>
       <nav aria-label="Main navigation">
         <span class="preview">Private preview</span>
+        <a href="/meme">Meme lab</a>
         <a href="https://builderapps.azure.com/docs/">Documentation <span aria-hidden="true">&nearr;</span></a>
       </nav>
     </header>
@@ -130,7 +131,7 @@ FORM: Brief-pinned ink-and-lime showcase, with a responsive split composition.
         <div><h2 id="guide-title">Small by design.</h2><p>A dependency-free sample for learning the App Service Builder GitHub-source workflow.</p></div>
         <div>
           <details><summary>Make the greeting yours</summary><p>Set <code>SAMPLE_GREETING</code> to your own public text. An unset or empty value uses <code>Hello from GitHub Desktop App!</code>. In Portal, save and deploy a new version to apply it. Never use a secret as your greeting.</p></details>
-          <details><summary>Explore the HTTP routes</summary><p><a href="/">/</a> returns the plain-text greeting. <a href="/health">/health</a> returns <code>OK</code>. This showcase lives at <code>/demo</code>; unknown paths return <code>Not found</code> with status 404.</p></details>
+          <details><summary>Explore the HTTP routes</summary><p><a href="/">/</a> returns the plain-text greeting. <a href="/health">/health</a> returns <code>OK</code>. <a href="/meme">/meme</a> opens the meme generator. This showcase lives at <code>/demo</code>; unknown paths return <code>Not found</code> with status 404.</p></details>
         </div>
       </section>
     </main>

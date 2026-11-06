@@ -6,6 +6,7 @@ import { get } from 'node:http';
 import { setTimeout as delay } from 'node:timers/promises';
 import { test } from 'node:test';
 import { renderDemo } from './demo.mjs';
+import { createMeme, renderMeme, renderMemeImage } from './meme.mjs';
 
 const root = new URL('./', import.meta.url);
 const expectedBuilder = `components:
@@ -133,6 +134,25 @@ test('HTTP routes and public greeting work with no external services', { timeout
         assert.match(demo.body, /<html lang="en">/);
         assert.match(demo.body, /name="viewport"/);
         assert.match(demo.body, /href="\/health"/);
+        assert.match(demo.body, /href="\/meme"/);
+        if (greeting === undefined) {
+          const query = new URLSearchParams({ image: '2', top: 'SHIP IT', bottom: 'ONE MORE COMMIT' });
+          const meme = await request(port, `/meme?${query}`);
+          assert.equal(meme.status, 200);
+          assert.equal(meme.type, 'text/html; charset=utf-8');
+          assert.match(meme.body, /Ship code\. Make memes\./);
+          assert.match(meme.body, /Very confident duck/);
+          assert.match(meme.body, /SHIP IT/);
+          assert.match(meme.body, /name="shuffle"/);
+          assert.ok(!meme.body.includes(env.PRIVATE_TEST_VALUE));
+          const image = await request(port, `/meme.svg?${query}`);
+          assert.equal(image.status, 200);
+          assert.equal(image.type, 'image/svg+xml; charset=utf-8');
+          assert.equal(image.body, renderMemeImage(createMeme(query)));
+          assert.equal((await request(port, `/meme.svg?${query}&download=1`)).body, image.body);
+          assert.equal((await request(port, '/meme')).status, 200);
+          assert.equal((await request(port, '/meme?shuffle=1')).status, 200);
+        }
         assert.deepEqual(await request(port, '/health'), {
           status: 200,
           type: 'text/plain; charset=utf-8',
@@ -157,4 +177,32 @@ test('demo renders public greeting only as escaped text', () => {
   assert.ok(html.includes('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; &#39;hello&#39;'));
   assert.ok(!html.includes('<script>'));
   assert.ok(!html.includes('<script src='));
+});
+
+test('meme generator selects valid random scenes and supports custom captions', () => {
+  for (let index = 0; index < 32; index += 1) {
+    const meme = createMeme(new URLSearchParams());
+    assert.ok(Number.isInteger(meme.image) && meme.image >= 0 && meme.image < 4);
+    assert.ok(meme.top.length > 0 && meme.bottom.length > 0);
+    assert.match(renderMemeImage(meme), /<svg xmlns=/);
+  }
+  const params = new URLSearchParams({ image: '3', top: '', bottom: 'Custom caption' });
+  assert.deepEqual(createMeme(params), { image: 3, top: '', bottom: 'Custom caption' });
+  params.set('shuffle', '1');
+  assert.notEqual(createMeme(params).bottom, 'Custom caption');
+});
+
+test('meme captions are bounded, XML-safe, escaped, and preserved in image URLs', () => {
+  const dangerous = '</textarea><script>alert("x")</script> & \'hello\'';
+  const meme = createMeme(new URLSearchParams({ image: '0', top: dangerous, bottom: 'A'.repeat(200) }));
+  assert.equal(meme.bottom.length, 100);
+  const html = renderMeme(meme);
+  assert.ok(html.includes('&lt;/textarea&gt;&lt;script&gt;'));
+  assert.ok(!html.includes('<script>'));
+  assert.ok(!renderMemeImage(meme).includes('<script>'));
+  const source = html.match(/<img src="([^"]+)"/)[1].replaceAll('&amp;', '&');
+  assert.deepEqual(createMeme(new URL(source, 'http://localhost').searchParams), meme);
+  const cleaned = createMeme(new URLSearchParams({ top: '\u0000Hello\u0001', bottom: '😸'.repeat(150) }));
+  assert.equal(cleaned.top, 'Hello');
+  assert.equal(Array.from(cleaned.bottom).length, 100);
 });
