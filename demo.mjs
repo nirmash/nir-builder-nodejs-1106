@@ -129,7 +129,7 @@ FORM: Brief-pinned ink-and-lime showcase, with a responsive split composition.
       <section class="guide" aria-labelledby="guide-title">
         <div><h2 id="guide-title">Small by design.</h2><p>A dependency-free sample for learning the App Service Builder GitHub-source workflow.</p></div>
         <div>
-          <details><summary>Make the greeting yours</summary><p>Set <code>SAMPLE_GREETING</code> to your own public text. An unset or empty value uses <code>Hello</code>. In Portal, save and deploy a new version to apply it. Never use a secret as your greeting.</p></details>
+          <details><summary>Make the greeting yours</summary><p>Set <code>SAMPLE_GREETING</code> to your own public text. An unset or empty value uses <code>Hello from GitHub Desktop App!</code>. In Portal, save and deploy a new version to apply it. Never use a secret as your greeting.</p></details>
           <details><summary>Explore the HTTP routes</summary><p><a href="/">/</a> returns the plain-text greeting. <a href="/health">/health</a> returns <code>OK</code>. This showcase lives at <code>/demo</code>; unknown paths return <code>Not found</code> with status 404.</p></details>
         </div>
       </section>

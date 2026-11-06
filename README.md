@@ -59,7 +59,7 @@ assets. The original endpoints are unchanged; there is no content negotiation.
 
 | Path | Status | Plain-text body |
 | --- | --- | --- |
-| `/` | 200 | `App Service Builder / nodejs-web: Hello` |
+| `/` | 200 | `App Service Builder / nodejs-web: Hello from GitHub Desktop App!` |
 | `/health` | 200 | `OK` |
 | Any unknown path | 404 | `Not found` |
 
@@ -118,7 +118,7 @@ it does **not** deploy to Azure.
 
 `SAMPLE_GREETING` is deliberately **public text**, not a secret. The app reflects
 only this setting, not the rest of the environment. An unset or empty value uses
-`Hello`. With no other instance running:
+`Hello from GitHub Desktop App!`. With no other instance running:
 
 ```sh
 SAMPLE_GREETING="Welcome" node server.mjs

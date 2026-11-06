@@ -118,17 +118,17 @@ test('HTTP routes and public greeting work with no external services', { timeout
         assert.deepEqual(await request(port, '/'), {
           status: 200,
           type: 'text/plain; charset=utf-8',
-          body: `App Service Builder / nodejs-web: ${greeting || 'Hello'}\n`,
+          body: `App Service Builder / nodejs-web: ${greeting || 'Hello from GitHub Desktop App!'}\n`,
         });
         assert.deepEqual(await request(port, '/', { Accept: 'text/html' }), {
           status: 200,
           type: 'text/plain; charset=utf-8',
-          body: `App Service Builder / nodejs-web: ${greeting || 'Hello'}\n`,
+          body: `App Service Builder / nodejs-web: ${greeting || 'Hello from GitHub Desktop App!'}\n`,
         });
         const demo = await request(port, '/demo');
         assert.equal(demo.status, 200);
         assert.equal(demo.type, 'text/html; charset=utf-8');
-        assert.equal(demo.body, renderDemo(greeting || 'Hello'));
+        assert.equal(demo.body, renderDemo(greeting || 'Hello from GitHub Desktop App!'));
         assert.ok(!demo.body.includes(env.PRIVATE_TEST_VALUE));
         assert.match(demo.body, /<html lang="en">/);
         assert.match(demo.body, /name="viewport"/);

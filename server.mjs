@@ -8,11 +8,11 @@ createServer((request, response) => {
     response.writeHead(200).end('OK\n');
   } else if (path === '/demo') {
     response.setHeader('Content-Type', 'text/html; charset=utf-8');
-    response.writeHead(200).end(renderDemo(process.env.SAMPLE_GREETING || 'Hello'));
+    response.writeHead(200).end(renderDemo(process.env.SAMPLE_GREETING || 'Hello from GitHub Desktop App!'));
   } else if (path === '/') {
     // Only this deliberately public setting is reflected; never dump process.env.
     response.writeHead(200).end(
-      `App Service Builder / nodejs-web: ${process.env.SAMPLE_GREETING || 'Hello'}\n`,
+      `App Service Builder / nodejs-web: ${process.env.SAMPLE_GREETING || 'Hello from GitHub Desktop App!'}\n`,
     );
   } else {
     response.writeHead(404).end('Not found\n');
